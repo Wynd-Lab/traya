@@ -1,0 +1,21 @@
+{
+    "name": "wynd/traya",
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://github.com/Wynd-Lab/nihilus",
+    "readme": "https://github.com/Wynd-Lab/nihilus/blob/master/README.md",
+    "description": "AggregateRoot component with 0 dependencies. Built by Wynd with PHP and ️❤️!",
+    "authors": [
+        {
+            "name": "Sylvain Pontoreau",
+            "email": "spontoreau@wynd.eu"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Wynd-Lab/traya"
+        }
+    ],
+    "require": {}
+}
