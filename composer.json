@@ -18,7 +18,8 @@
         }
     ],
     "scripts": {
-        "test": "vendor/bin/phpunit"
+        "test": "vendor/bin/phpunit",
+        "lint": "vendor/bin/phpmd src text codesize,cleancode,design,naming,controversial,unusedcode"
     },
     "autoload": {
         "psr-4": { "Traya\\" : ["src/"] }
