@@ -1,0 +1,6 @@
+/vendor/
+/tmp/
+.php_cs.cache
+.idea
+.vscode
+.DS_Store
