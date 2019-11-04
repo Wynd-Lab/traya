@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use PHPUnit\Framework\TestCase;
 use Traya\AggregateRoot;
 use Traya\EventInterface;
@@ -30,9 +32,24 @@ final class AggregateRootTest extends TestCase
         // Arrange
         $expected = new class(uniqid(), uniqid(), [uniqid()], [uniqid()]) implements EventInterface
         {
+            /**
+             * @var string
+             */
             private $streamId;
+
+            /**
+             * @var string
+             */
             private $type;
+
+            /**
+             * @var array
+             */
             private $metadata;
+
+            /**
+             * @var array
+             */
             private $payload;
 
             public function __construct(string $streamId, string $type, array $metadata, array $payload)
@@ -43,22 +60,22 @@ final class AggregateRootTest extends TestCase
                 $this->payload = $payload;
             }
 
-            public function getStreamId()
+            public function getStreamId(): string
             {
                 return $this->streamId;
             }
 
-            public function getType()
+            public function getType(): string
             {
                 return $this->type;
             }
 
-            public function getMetadata()
+            public function getMetadata(): array
             {
                 return $this->metadata;
             }
 
-            public function getPayload()
+            public function getPayload(): array
             {
                 return $this->payload;
             }
