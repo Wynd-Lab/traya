@@ -8,9 +8,16 @@ final class AggregateRootTest extends TestCase
     /**
      * @test
      */
-    public function WhenCreateAnInstance_ThenAnInstanceIsCreated()
+    public function WhenCreateAnInstance_ThenAnEmptyCollectionOfEventsIsAvailable()
     {
-        $actual = new AggregateRoot();
-        $this->assertTrue(true);
+        // Arrange
+        $expected = [];
+
+        // Act
+        $aggregate = new AggregateRoot();
+        $actual = $aggregate->getUncommitedEvents();
+
+        // Assert
+        $this->assertEquals($expected, $actual);
     }
 }
