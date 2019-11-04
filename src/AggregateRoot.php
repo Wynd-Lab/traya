@@ -29,9 +29,14 @@ class AggregateRoot
         array_push($this->events, $event);
     }
 
-    public function pop()
+    /**
+     * @return EventInterface[]
+     */
+    public function pop(): array
     {
+        $events = $this->events;
         $this->events = [];
+        return $events;
 
     }
 }
