@@ -28,4 +28,10 @@ class AggregateRoot
     {
         array_push($this->events, $event);
     }
+
+    public function pop()
+    {
+        $this->events = [];
+
+    }
 }

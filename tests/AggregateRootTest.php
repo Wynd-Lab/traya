@@ -88,4 +88,79 @@ final class AggregateRootTest extends TestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * @test
+     */
+    public function WhenPopMethodIsCalled_ThenNoUncommitedEventsAreAvailable()
+    {
+        // Arrange
+        $events = array();
+        
+        for($i = 0; $i < rand(1, 100); $i++) {
+            array_push($events, new class(uniqid(), uniqid(), [uniqid()], [uniqid()]) implements EventInterface
+            {
+                /**
+                 * @var string
+                 */
+                private $streamId;
+    
+                /**
+                 * @var string
+                 */
+                private $type;
+    
+                /**
+                 * @var array
+                 */
+                private $metadata;
+    
+                /**
+                 * @var array
+                 */
+                private $payload;
+    
+                public function __construct(string $streamId, string $type, array $metadata, array $payload)
+                {
+                    $this->streamId = $streamId;
+                    $this->type = $type;
+                    $this->metadata = $metadata;
+                    $this->payload = $payload;
+                }
+    
+                public function getStreamId(): string
+                {
+                    return $this->streamId;
+                }
+    
+                public function getType(): string
+                {
+                    return $this->type;
+                }
+    
+                public function getMetadata(): array
+                {
+                    return $this->metadata;
+                }
+    
+                public function getPayload(): array
+                {
+                    return $this->payload;
+                }
+            });
+        }
+
+        $aggregate = new AggregateRoot();
+
+        foreach($events as $event) {
+            $aggregate->record($event);
+        }
+
+        // Act
+        $aggregate->pop();
+        $actual = $aggregate->getUncommitedEvents();
+
+        // Assert
+        $this->assertEmpty($actual);
+    }
 }
