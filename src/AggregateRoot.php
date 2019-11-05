@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Traya;
 
-class AggregateRoot 
+abstract class AggregateRoot 
 {
     /**
      * @var EventInterface[]
@@ -37,6 +37,18 @@ class AggregateRoot
         $events = $this->events;
         $this->events = [];
         return $events;
-
     }
+
+    /**
+     * @param EventInterface[] events
+     */
+    public function load(array $events): void
+    {
+        foreach($events as $event)
+        {
+            $this->apply($event);
+        }
+    }
+
+    protected abstract function apply(EventInterface $event): void;
 }

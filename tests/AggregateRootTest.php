@@ -17,7 +17,8 @@ final class AggregateRootTest extends TestCase
         $expected = [];
 
         // Act
-        $aggregate = new AggregateRoot();
+        $aggregate = $this->getMockForAbstractClass(AggregateRoot::class);
+
         $actual = $aggregate->getUncommitedEvents();
 
         // Assert
@@ -81,7 +82,7 @@ final class AggregateRootTest extends TestCase
             }
         };
 
-        $aggregate = new AggregateRoot();
+        $aggregate = $this->getMockForAbstractClass(AggregateRoot::class);
         $aggregate->record($expected);
         $events = $aggregate->getUncommitedEvents();
         $actual = $events[0];
@@ -150,7 +151,7 @@ final class AggregateRootTest extends TestCase
             });
         }
 
-        $aggregate = new AggregateRoot();
+        $aggregate = $this->getMockForAbstractClass(AggregateRoot::class);
 
         foreach($events as $event) {
             $aggregate->record($event);
@@ -225,7 +226,7 @@ final class AggregateRootTest extends TestCase
             });
         }
 
-        $aggregate = new AggregateRoot();
+        $aggregate = $this->getMockForAbstractClass(AggregateRoot::class);
 
         foreach($expected as $event) {
             $aggregate->record($event);
@@ -236,5 +237,75 @@ final class AggregateRootTest extends TestCase
 
         // Assert
         $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function GivenEvents_WhenLoadInAnAggregate_ThenApplyMethodIsCalledForEachEvent()
+    {
+        // Arrange
+        $events = array();
+        
+        for($i = 0; $i < rand(1, 100); $i++) {
+            array_push($events, new class(uniqid(), uniqid(), [uniqid()], [uniqid()]) implements EventInterface
+            {
+                /**
+                 * @var string
+                 */
+                private $streamId;
+    
+                /**
+                 * @var string
+                 */
+                private $type;
+    
+                /**
+                 * @var array
+                 */
+                private $metadata;
+    
+                /**
+                 * @var array
+                 */
+                private $payload;
+    
+                public function __construct(string $streamId, string $type, array $metadata, array $payload)
+                {
+                    $this->streamId = $streamId;
+                    $this->type = $type;
+                    $this->metadata = $metadata;
+                    $this->payload = $payload;
+                }
+    
+                public function getStreamId(): string
+                {
+                    return $this->streamId;
+                }
+    
+                public function getType(): string
+                {
+                    return $this->type;
+                }
+    
+                public function getMetadata(): array
+                {
+                    return $this->metadata;
+                }
+    
+                public function getPayload(): array
+                {
+                    return $this->payload;
+                }
+            });
+        }
+
+        $aggregate = $this->getMockForAbstractClass(AggregateRoot::class);
+
+        // Assert
+        $aggregate->expects($this->exactly(sizeof($events)))->method('apply');
+
+        // Act
+        $aggregate->load($events);
     }
 }
