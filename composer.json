@@ -19,6 +19,7 @@
     ],
     "scripts": {
         "test": "vendor/bin/phpunit",
+        "test:coverage": "vendor/bin/phpunit tests --bootstrap vendor/autoload.php --coverage-html=coverrage/",
         "lint": "vendor/bin/phpmd src text codesize,cleancode,design,naming,controversial,unusedcode"
     },
     "autoload": {
