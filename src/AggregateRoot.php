@@ -50,5 +50,10 @@ abstract class AggregateRoot
         }
     }
 
-    protected abstract function apply(EventInterface $event): void;
+    protected function apply(EventInterface $event): void
+    {
+        $eventName = get_class($event);
+        $handlerMethodName = "on${eventName}";
+        call_user_func_array(array($this, $handlerMethodName), array($event));
+    }
 }

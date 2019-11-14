@@ -300,7 +300,7 @@ final class AggregateRootTest extends TestCase
             });
         }
 
-        $aggregate = $this->getMockForAbstractClass(AggregateRoot::class);
+        $aggregate = $this->getMockForAbstractClass(AggregateRoot::class, array(), '', TRUE, TRUE, TRUE, array('apply'));
 
         // Assert
         $aggregate->expects($this->exactly(sizeof($events)))->method('apply');
@@ -308,4 +308,80 @@ final class AggregateRootTest extends TestCase
         // Act
         $aggregate->load($events);
     }
+
+    /**
+     * @test
+     */
+    public function GivenEvents_WhenLoadInAnAggregate_ThenEventHandlerMethodsAreCalled()
+    {
+        $event = new Event(uniqid(), uniqid(), [uniqid()], [uniqid()]);
+
+        $eventName = get_class($event);
+        var_dump($eventName);
+        $eventHandlerMethodName = "on{$eventName}";
+
+        $aggregate = $this->getMockForAbstractClass(FakeAggrateRoot::class);
+
+        //Assert
+        $aggregate
+            ->expects($this->once())
+            ->method($eventHandlerMethodName);
+
+        //Act
+        $aggregate->load(array($event));
+    }
+}
+
+class Event implements EventInterface {
+    /**
+     * @var string
+     */
+    private $streamId;
+
+    /**
+     * @var string
+     */
+    private $type;
+
+    /**
+     * @var array
+     */
+    private $metadata;
+
+    /**
+     * @var array
+     */
+    private $payload;
+
+    public function __construct(string $streamId, string $type, array $metadata, array $payload)
+    {
+        $this->streamId = $streamId;
+        $this->type = $type;
+        $this->metadata = $metadata;
+        $this->payload = $payload;
+    }
+
+    public function getStreamId(): string
+    {
+        return $this->streamId;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function getMetadata(): array
+    {
+        return $this->metadata;
+    }
+
+    public function getPayload(): array
+    {
+        return $this->payload;
+    }
+}
+
+abstract class FakeAggrateRoot extends AggregateRoot {
+    protected abstract function onEvent(Event $event);
 }
