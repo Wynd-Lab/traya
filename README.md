@@ -4,7 +4,7 @@
 [![Azure Pipelines](https://img.shields.io/azure-devops/build/pontoreausylvain/75e3bd3f-37cc-4383-9c61-c82efc276085/3)](https://dev.azure.com/pontoreausylvain/Traya/_build?definitionId=3)
 ![Azure DevOps tests](https://img.shields.io/azure-devops/tests/pontoreausylvain/traya/3)
 
-**Traya** is a nAggregateRoot & Event Publishing component built by [Wynd](https://www.wynd.eu) and used by our backend projects.
+**Traya** is an AggregateRoot & Event Publishing component built by [Wynd](https://www.wynd.eu) and used by our backend projects.
 
 This project is part of the _Sith Triumvirate_ project with:
 - [Nihilus](https://github.com/Wynd-Lab/nihilus): CQRS
