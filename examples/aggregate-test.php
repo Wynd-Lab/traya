@@ -172,7 +172,7 @@ class Deposited extends AbstractEvent
 }
 
 // Aggregate
-class AccountAggregate extends AggregateRoot
+abstract class AccountAggregate extends AggregateRoot
 {
     /**
      * @var AccountState
